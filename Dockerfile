@@ -9,6 +9,7 @@ ENV METADATA_FILE=/dev/null
 
 # Install standard Act helpers
 RUN mkdir /tmp/helpers/
+ADD https://raw.githubusercontent.com/nektos/act-environments/$ACT_ENV_COMMIT/images/linux/scripts/helpers/apt.sh /tmp/helpers/apt.sh
 ADD https://raw.githubusercontent.com/nektos/act-environments/$ACT_ENV_COMMIT/images/linux/scripts/helpers/document.sh /tmp/helpers/document.sh
 ENV HELPER_SCRIPTS /tmp/helpers
 
@@ -16,6 +17,9 @@ ENV HELPER_SCRIPTS /tmp/helpers
 RUN apt-get update && apt-get -y install sudo lsb-release unzip xvfb libxss1
 
 # --- Manually run just the installers we need, rather than using the full 18GB base image: ---
+
+# Native build essentials
+RUN sh -c "curl -s https://raw.githubusercontent.com/nektos/act-environments/$ACT_ENV_COMMIT/images/linux/scripts/installers/build-essential.sh | bash"
 
 # Google-chrome & ChromeDriver
 RUN sh -c "curl -s https://raw.githubusercontent.com/nektos/act-environments/$ACT_ENV_COMMIT/images/linux/scripts/installers/google-chrome.sh | bash"
