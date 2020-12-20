@@ -23,3 +23,6 @@ RUN sh -c "curl -s https://raw.githubusercontent.com/nektos/act-environments/$AC
 
 # Google-chrome & ChromeDriver
 RUN sh -c "curl -s https://raw.githubusercontent.com/nektos/act-environments/$ACT_ENV_COMMIT/images/linux/scripts/installers/google-chrome.sh | bash"
+
+# Firefox (for some reason the standard scripts don't work - they use 'firefox', with no ESR).
+RUN apt-get -y install firefox-esr
