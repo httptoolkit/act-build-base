@@ -14,7 +14,7 @@ ADD https://raw.githubusercontent.com/nektos/act-environments/$ACT_ENV_COMMIT/im
 ENV HELPER_SCRIPTS /tmp/helpers
 
 # Install basic prerequisites
-RUN apt-get update && apt-get -y install sudo lsb-release unzip xvfb libxss1
+RUN apt-get update && apt-get -y install sudo lsb-release unzip xvfb libxss1 git
 
 # --- Manually run just the installers we need, rather than using the full 18GB base image: ---
 
