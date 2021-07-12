@@ -15,6 +15,9 @@ RUN apt-get update && apt-get -y install sudo lsb-release unzip xvfb libxss1 git
 
 # --- Manually run just the installers we need, rather than using the full 18GB base image: ---
 
+# Install new Git - without this the outdated version causes problems with GH
+RUN sh -c "curl -s https://raw.githubusercontent.com/nektos/act-environments/$ACT_ENV_COMMIT/images/linux/scripts/installers/git.sh | bash"
+
 # Native build essentials
 RUN sh -c "curl -s https://raw.githubusercontent.com/nektos/act-environments/$ACT_ENV_COMMIT/images/linux/scripts/installers/build-essential.sh | bash"
 
