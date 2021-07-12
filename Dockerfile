@@ -27,6 +27,15 @@ RUN sh -c "curl -s https://raw.githubusercontent.com/nektos/act-environments/$AC
 # Google-chrome & ChromeDriver
 RUN sh -c "curl -s https://raw.githubusercontent.com/nektos/act-environments/$ACT_ENV_COMMIT/images/linux/scripts/installers/google-chrome.sh | bash"
 
+# Docker & docker-compose. Installed manually, because script tests with 'docker info', and docker doesn't work in the build (needs --privileged)
+RUN curl https://packages.microsoft.com/keys/microsoft.asc | apt-key add - &&\
+    curl https://packages.microsoft.com/config/ubuntu/16.04/prod.list > /etc/apt/sources.list.d/microsoft-prod.list &&\
+    apt-get update &&\
+    apt-get install -y moby-engine moby-cli
+RUN sh -c "curl -s https://raw.githubusercontent.com/nektos/act-environments/$ACT_ENV_COMMIT/images/linux/scripts/installers/docker-compose.sh | bash"
+# Required for AUFS images on DIND
+VOLUME /var/lib/docker
+
 # Firefox (standard scripts don't work due to geckodriver release changes, doesn't matter - we don't use it)
 RUN apt-get -y install firefox
 
