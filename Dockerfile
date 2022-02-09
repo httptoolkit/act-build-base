@@ -36,6 +36,7 @@ RUN curl https://packages.microsoft.com/keys/microsoft.asc | apt-key add - &&\
     apt-get update &&\
     apt-get install -y moby-engine moby-cli
 RUN sh -c "curl -s https://raw.githubusercontent.com/nektos/act-environments/$ACT_ENV_COMMIT/images/linux/scripts/installers/docker-compose.sh | bash"
+
 # Required for AUFS images on DIND
 VOLUME /var/lib/docker
 
@@ -44,3 +45,12 @@ RUN apt-get -y install firefox
 
 # Clean up apt cache etc for a smaller final image
 RUN apt-get clean autoclean && apt-get autoremove --yes && rm -rf /var/lib/apt/lists/*
+
+# It seems that in GHA non-run steps always run as the default USER, while run steps always use UID 1001. We make the 1001 user the default
+# here, so that everything runs as the same user, and we avoid permissions conflicts later on.
+RUN adduser --system build-user --shell /bin/bash --group --uid 1001 && \
+    usermod -aG sudo build-user && \
+    echo 'Defaults !authenticate' >> /etc/sudoers && \
+    usermod -aG docker build-user
+
+USER build-user
