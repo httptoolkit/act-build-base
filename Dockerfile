@@ -23,6 +23,9 @@ VOLUME /var/lib/docker
 # Clean up apt cache etc for a smaller final image (assuming squashing)
 RUN apt-get clean autoclean && apt-get autoremove --yes && rm -rf /var/lib/apt/lists/*
 
+# Fix annoying Yarn issue: https://github.com/yarnpkg/yarn/issues/7866
+RUN curl -sL https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
+
 # It seems that in GHA non-run steps always run as the default USER, while run steps always use UID 1001. We make the 1001 user the default
 # here, so that everything runs as the same user, and we avoid permissions conflicts later on.
 RUN adduser --system build-user --shell /bin/bash --group --uid 1001 && \
