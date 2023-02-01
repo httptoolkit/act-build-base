@@ -7,7 +7,7 @@ COPY firefox-no-snap /etc/apt/preferences.d/firefox-no-snap
 # Install basic prerequisites
 RUN add-apt-repository -y ppa:mozillateam/ppa && \
     apt-get update && \
-    apt-get -y install xvfb libxss1 build-essential firefox
+    apt-get -y install xvfb libxss1 build-essential firefox moby-engine
 
 # Google-chrome & ChromeDriver
 COPY ./chrome.sh .
